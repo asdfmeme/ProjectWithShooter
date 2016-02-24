@@ -2,10 +2,15 @@ package org.usfirst.frc.team4576.robot.subsystems;
 
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Shooter extends Subsystem {
+
+public class Shooter extends PIDSubsystem {
 		
 	public Shooter() {
 		
@@ -16,6 +21,21 @@ public class Shooter extends Subsystem {
 		shooterElevL.changeControlMode(CANTalon.TalonControlMode.Follower);
 		shooterElevL.set(shooterElevR.getDeviceID());
 		shooterElevL.reverseOutput(true); 
+		
+		int absPos = shooterElevR.getPulseWidthPosition() & 0xFFF;  /* mask only 12 bits */
+		shooterElevR.setEncPosition(absPos);
+		shooterElevR.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		shooterElevR.reverseSensor(false);
+		shooterElevR.configEncoderCodesPerRev(4096);
+		shooterElevR.configNominalOutputVoltage(+0f, -0f);
+		shooterElevR.configPeakOutputVoltage(+0f, -0f);
+		shooterElevR.setAllowableClosedLoopErr(0);
+		shooterElevR.setProfile(0);
+		shooterElevR.setF(0.0);
+		shooterElevR.setP(0.1);
+		shooterElevR.setI(0.0);
+		shooterElevR.setD(0.0);
+
 	}
 	
 	CANTalon shooterElevL = new CANTalon(4);
@@ -87,6 +107,18 @@ public class Shooter extends Subsystem {
 		
 		shooterElevR.set(stick.getRawAxis(3) - stick.getRawAxis(2));
 		//shooterElevL.set(stick.getRawAxis(3) - stick.getRawAxis(2));
+	}
+
+	@Override
+	protected double returnPIDInput() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void usePIDOutput(double output) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	
