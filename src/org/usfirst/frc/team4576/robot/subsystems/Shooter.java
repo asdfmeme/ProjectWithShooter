@@ -3,14 +3,14 @@ package org.usfirst.frc.team4576.robot.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
+//import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
+//import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
-public class Shooter extends PIDSubsystem {
+public class Shooter extends Subsystem {
 		
 	public Shooter() {
 		
@@ -117,17 +117,6 @@ public class Shooter extends PIDSubsystem {
 		//shooterElevL.set(stick.getRawAxis(3) - stick.getRawAxis(2));
 	}
 
-	@Override
-	protected double returnPIDInput() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	protected void usePIDOutput(double output) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 
