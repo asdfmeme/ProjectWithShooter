@@ -28,7 +28,7 @@ public class Shooter extends PIDSubsystem {
 		shooterElevR.reverseSensor(false);
 		shooterElevR.configEncoderCodesPerRev(4096);
 		shooterElevR.configNominalOutputVoltage(+0f, -0f);
-		shooterElevR.configPeakOutputVoltage(+0f, -0f);
+		shooterElevR.configPeakOutputVoltage(+12f, -12f);
 		shooterElevR.setAllowableClosedLoopErr(0);
 		shooterElevR.setProfile(0);
 		shooterElevR.setF(0.0);
@@ -43,6 +43,8 @@ public class Shooter extends PIDSubsystem {
 	CANTalon shooterWheelL = new CANTalon(6);
 	CANTalon shooterWheelR = new CANTalon(7);
 	
+	TalonControlMode _elevMode;
+	TalonControlMode _wheelMode;
 	
 	
 	//double currentAmps = shooterWheelR.getOutputCurrent();
@@ -56,28 +58,34 @@ public class Shooter extends PIDSubsystem {
 
 	public void up() {
 		//Timer.delay(1);
+		shooterElevR.changeControlMode(TalonControlMode.PercentVbus);
 		shooterElevR.set(-.5);
 		
 
 	}
 
 	public void down() {
+		shooterElevR.changeControlMode(TalonControlMode.PercentVbus);
 		shooterElevR.set(.5);
 		
 	}
 	public void in(){
+		shooterWheelL.changeControlMode(TalonControlMode.PercentVbus);
 		shooterWheelL.set(-.5);
 				
 		
 	}
 	
 	public void out(){
+		shooterWheelL.changeControlMode(TalonControlMode.PercentVbus);
 		shooterWheelL.set(.5);
 				
 	} 
 
 	public void stop() {
+		shooterElevR.changeControlMode(TalonControlMode.Speed);
 		shooterElevR.set(0);
+		shooterElevR.changeControlMode(TalonControlMode.Speed);
 		shooterWheelL.set(0);
 		
 	}
