@@ -60,15 +60,18 @@ public class Shooter extends Subsystem {
 		//Timer.delay(1);
 		shooterElevR.changeControlMode(TalonControlMode.PercentVbus);
 		shooterElevR.set(-.5);
-		
-
 	}
 
 	public void down() {
 		shooterElevR.changeControlMode(TalonControlMode.PercentVbus);
 		shooterElevR.set(.5);
-		
 	}
+
+	public void elevating(double rate) {
+		shooterElevR.changeControlMode(TalonControlMode.Speed);
+		shooterElevR.set(rate * 5.0);
+	}
+
 	public void in(){
 		shooterWheelL.changeControlMode(TalonControlMode.PercentVbus);
 		shooterWheelL.set(-.5);
@@ -82,10 +85,16 @@ public class Shooter extends Subsystem {
 				
 	} 
 
+	public void freeze() {
+		int absPos = shooterElevR.getEncPosition() & 0xFFF;
+		shooterElevR.changeControlMode(TalonControlMode.Position);
+		shooterElevR.set(absPos);
+	}
+	
 	public void stop() {
 		shooterElevR.changeControlMode(TalonControlMode.Speed);
 		shooterElevR.set(0);
-		shooterElevR.changeControlMode(TalonControlMode.Speed);
+		shooterWheelL.changeControlMode(TalonControlMode.Speed);
 		shooterWheelL.set(0);
 		
 	}
@@ -96,24 +105,18 @@ public class Shooter extends Subsystem {
 		
 		//System.out.println("gamepad control");
 		//System.out.println(stick.getRawAxis(3) +  " " + stick.getRawAxis(2));
-			if(stick.getRawAxis(3) - stick.getRawAxis(2) < 0 && stick.getRawAxis(3) - stick.getRawAxis(2) > -0.1)
+		    double axial = stick.getRawAxis(3) - stick.getRawAxis(2);
+			if(Math.abs(axial) < -0.1)
 			{
-				shooterElevR.set(0);
-				//shooterElevL.set(0);
-				return;
+				freeze();
+			}
+			else 
+			{
+				elevating(axial);
 			}
 		
 		
-		
-			if(stick.getRawAxis(3) - stick.getRawAxis(2) > 0 && stick.getRawAxis(3) - stick.getRawAxis(2) < 0.1)
-			{
-				shooterElevR.set(0);
-				//shooterElevL.set(0);
-				return;
-			}
-		
-		
-		shooterElevR.set(stick.getRawAxis(3) - stick.getRawAxis(2));
+		//shooterElevR.set(stick.getRawAxis(3) - stick.getRawAxis(2));
 		//shooterElevL.set(stick.getRawAxis(3) - stick.getRawAxis(2));
 	}
 
